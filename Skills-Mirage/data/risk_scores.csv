@@ -1,0 +1,20 @@
+skill,demand,demand_pct,risk_level
+machine learning,28032,32.25,Low AI Risk
+data analysis,24586,28.28,Low AI Risk
+sql,20580,23.68,Low AI Risk
+python,11073,12.74,Low AI Risk
+excel,5417,6.23,Low AI Risk
+project management,4050,4.66,Medium AI Risk
+power bi,3898,4.48,Medium AI Risk
+deep learning,2556,2.94,Medium AI Risk
+nlp,1720,1.98,Medium AI Risk
+tensorflow,1713,1.97,Medium AI Risk
+tableau,1680,1.93,Medium AI Risk
+java,1658,1.91,Medium AI Risk
+spark,1076,1.24,Medium AI Risk
+azure,1063,1.22,Medium AI Risk
+aws,1011,1.16,High AI Risk
+communication,877,1.01,High AI Risk
+statistics,760,0.87,High AI Risk
+hadoop,545,0.63,High AI Risk
+r programming,42,0.05,High AI Risk
