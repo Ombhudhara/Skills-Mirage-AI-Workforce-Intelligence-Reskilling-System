@@ -1,0 +1,37 @@
+role,city,salary_min,salary_max,skills,experience,description,industry,posting_date,month
+Data Analyst,Pune,6,10,"Python,SQL,Excel,PowerBI",2,Analyze business data and create dashboards,IT,2026-01-05,Jan
+Data Analyst,Pune,7,12,"Python,SQL,PowerBI,Tableau",3,Work on sales analytics and reporting,IT,2026-01-10,Jan
+Data Analyst,Bangalore,8,14,"Python,SQL,Machine Learning,PowerBI",3,Build predictive models for e-commerce,IT,2026-01-12,Jan
+Data Analyst,Bangalore,9,15,"Python,SQL,Spark,Azure",4,Big data analytics on cloud platforms,IT,2026-01-14,Jan
+Data Analyst,Mumbai,6,10,"SQL,Excel,PowerBI,R",2,Financial data analysis and reporting,Finance,2026-01-15,Jan
+Data Analyst,Pune,6,11,"Python,SQL,Excel,Tableau",2,Analyze customer data for retail chain,Retail,2026-02-01,Feb
+Data Analyst,Pune,7,13,"Python,SQL,PowerBI,Statistics",3,Analytics for digital marketing campaigns,Marketing,2026-02-03,Feb
+Data Analyst,Bangalore,9,16,"Python,SQL,ML,PowerBI,Spark",4,Data science and ML model deployment,IT,2026-02-05,Feb
+Data Analyst,Bangalore,8,14,"Python,SQL,PowerBI,Azure",3,BI development for enterprise clients,IT,2026-02-07,Feb
+Data Analyst,Mumbai,7,11,"SQL,Excel,PowerBI,Tableau",2,Retail analytics and inventory forecasting,Retail,2026-02-09,Feb
+Digital Marketing Specialist,Pune,5,9,"SEO,Google Analytics,Social Media,Content Marketing",2,Run digital campaigns for B2C brand,Marketing,2026-01-06,Jan
+Digital Marketing Specialist,Pune,6,10,"SEO,Google Analytics,Email Marketing,PPC",3,Manage PPC and SEO for e-commerce portal,Marketing,2026-01-11,Jan
+Digital Marketing Specialist,Bangalore,7,12,"SEO,Google Analytics,Marketing Strategy,PPC",3,Lead generation and brand strategy,Marketing,2026-01-13,Jan
+Digital Marketing Specialist,Mumbai,5,9,"Social Media,Content Marketing,Email Marketing",2,Social media management and campaigns,Marketing,2026-01-16,Jan
+Digital Marketing Specialist,Pune,5,10,"SEO,Google Analytics,Marketing Strategy,Content Marketing",2,SEO and content strategy for SaaS startup,IT,2026-02-02,Feb
+Digital Marketing Specialist,Pune,6,11,"SEO,PPC,Google Analytics,CRM",3,Growth hacking and paid media for D2C,Marketing,2026-02-04,Feb
+Digital Marketing Specialist,Bangalore,7,13,"SEO,Google Analytics,Marketing Strategy,Analytics",3,Digital strategy for B2B tech company,IT,2026-02-06,Feb
+Digital Marketing Specialist,Mumbai,6,10,"Social Media,Content Marketing,SEO,Email Marketing",2,Multi-channel digital marketing,FMCG,2026-02-08,Feb
+Customer Support,Pune,3,5,"Communication,CRM,Problem Solving",1,Handle inbound customer queries for fintech,Fintech,2026-01-07,Jan
+Customer Support,Pune,3,5,"Communication,CRM,Email Support",1,Email and chat support for e-commerce,Retail,2026-01-09,Jan
+Customer Support,Bangalore,4,6,"Communication,CRM,Technical Support",2,Technical customer support for SaaS,IT,2026-01-17,Jan
+Customer Support,Pune,3,5,"Communication,CRM,Problem Solving",1,BPO process for banking client,Finance,2026-02-10,Feb
+Customer Support,Bangalore,4,6,"Communication,CRM,Social Media Support",2,Social media and chat support,Retail,2026-02-11,Feb
+Customer Success Manager,Pune,7,12,"CRM,Communication,Account Management,Data Analytics",3,Manage portfolio of enterprise accounts,IT,2026-01-08,Jan
+Customer Success Manager,Bangalore,8,14,"CRM,Account Management,Data Analytics,Marketing Strategy",4,Drive product adoption and retention,IT,2026-01-18,Jan
+Customer Success Manager,Pune,7,13,"CRM,Account Management,Communication,Data Analytics",3,Ensure client success for B2B product,IT,2026-02-12,Feb
+Customer Success Manager,Bangalore,9,15,"CRM,Account Management,Data Analytics,Marketing Strategy",4,Strategic account management for SaaS,IT,2026-02-13,Feb
+BPO Executive,Pune,2,4,"Communication,CRM,Data Entry",1,Handle calls and update CRM records,BPO,2026-01-19,Jan
+BPO Executive,Pune,2,4,"Communication,Data Entry,Email Support",1,Process insurance claims via email,Insurance,2026-01-20,Jan
+BPO Executive,Mumbai,2,4,"Communication,CRM,Data Entry",1,Outbound sales calls for telecom,Telecom,2026-01-21,Jan
+BPO Executive,Pune,2,4,"Communication,CRM,Data Entry",1,Inbound support for banking,Finance,2026-02-14,Feb
+BPO Executive,Mumbai,2,4,"Communication,Data Entry,Email Support",1,Back-office operations for insurance,Insurance,2026-02-15,Feb
+Sales Analytics,Indore,4,7,"CRM,Sales Analytics,Excel,PowerBI",2,Sales data reporting and pipeline management,FMCG,2026-01-22,Jan
+Sales Analytics,Indore,4,8,"CRM,Sales Analytics,Excel,SQL",2,Analyze sales funnel and conversion metrics,Retail,2026-02-16,Feb
+CRM Management,Indore,3,6,"CRM,Communication,Email Marketing",1,Manage CRM data and customer segments,Marketing,2026-01-23,Jan
+CRM Management,Indore,4,7,"CRM,Email Marketing,Marketing Strategy",2,CRM automation and drip campaigns,IT,2026-02-17,Feb
