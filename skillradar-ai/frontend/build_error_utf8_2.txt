@@ -1,0 +1,113 @@
+﻿
+> frontend@0.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32mΓ£ô[39m 2834 modules transformed.
+node.exe : [31mΓ£ù[39m 
+Build failed in 4.66s
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" 
+"C:\Program 
+Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: ([31mΓ£  
+  ù[39m Build failed in 4   
+ .66s:String) [], RemoteE    
+xception
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+[31merror during build:
+[31msrc/pages/Analytics.jsx 
+(21:9): "apiClient" is not 
+exported by 
+"src/api/client.js", 
+imported by "src/pages/Analyt
+ics.jsx".[31m
+file: [36mC:/Users/divye/One
+Drive/Desktop/Practice/hackmi
+end/skillradar-ai/frontend/sr
+c/pages/Analytics.jsx:21:9[3
+1m
+[33m
+19:     ScatterChart, 
+Scatter, ZAxis
+20: } from 'recharts';
+21: import { apiClient } 
+from '../api/client';
+             ^
+22: 
+23: const Analytics = () => {
+[31m
+    at getRollupError (file:/
+//C:/Users/divye/OneDrive/Des
+ktop/Practice/hackmiend/skill
+radar-ai/frontend/node_module
+s/rollup/dist/es/shared/parse
+Ast.js:402:41)
+    at error (file:///C:/User
+s/divye/OneDrive/Desktop/Prac
+tice/hackmiend/skillradar-ai/
+frontend/node_modules/rollup/
+dist/es/shared/parseAst.js:39
+8:42)
+    at Module.error (file:///
+C:/Users/divye/OneDrive/Deskt
+op/Practice/hackmiend/skillra
+dar-ai/frontend/node_modules/
+rollup/dist/es/shared/node-en
+try.js:17040:16)
+    at Module.traceVariable (
+file:///C:/Users/divye/OneDri
+ve/Desktop/Practice/hackmiend
+/skillradar-ai/frontend/node_
+modules/rollup/dist/es/shared
+/node-entry.js:17452:29)
+    at 
+ModuleScope.findVariable (fil
+e:///C:/Users/divye/OneDrive/
+Desktop/Practice/hackmiend/sk
+illradar-ai/frontend/node_mod
+ules/rollup/dist/es/shared/no
+de-entry.js:15070:39)
+    at ReturnValueScope.findV
+ariable (file:///C:/Users/div
+ye/OneDrive/Desktop/Practice/
+hackmiend/skillradar-ai/front
+end/node_modules/rollup/dist/
+es/shared/node-entry.js:5673:
+38)
+    at FunctionBodyScope.find
+Variable (file:///C:/Users/di
+vye/OneDrive/Desktop/Practice
+/hackmiend/skillradar-ai/fron
+tend/node_modules/rollup/dist
+/es/shared/node-entry.js:5673
+:38)
+    at ReturnValueScope.findV
+ariable (file:///C:/Users/div
+ye/OneDrive/Desktop/Practice/
+hackmiend/skillradar-ai/front
+end/node_modules/rollup/dist/
+es/shared/node-entry.js:5673:
+38)
+    at FunctionBodyScope.find
+Variable (file:///C:/Users/di
+vye/OneDrive/Desktop/Practice
+/hackmiend/skillradar-ai/fron
+tend/node_modules/rollup/dist
+/es/shared/node-entry.js:5673
+:38)
+    at 
+BlockScope.findVariable (file
+:///C:/Users/divye/OneDrive/D
+esktop/Practice/hackmiend/ski
+llradar-ai/frontend/node_modu
+les/rollup/dist/es/shared/nod
+e-entry.js:5673:38)[39m

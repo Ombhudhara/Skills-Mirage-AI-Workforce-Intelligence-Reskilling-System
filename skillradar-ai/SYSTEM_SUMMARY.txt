@@ -1,0 +1,225 @@
+================================================================================
+     SKILLRADAR AI - BACKEND RESKILLING & WORKER INTELLIGENCE SYSTEM
+                          COMPREHENSIVE ANALYSIS
+================================================================================
+
+DOCUMENT CREATED: March 6, 2026
+ANALYSIS SCOPE: Complete backend architecture, data flows, and integration guide
+
+================================================================================
+SECTION 1: SYSTEM OVERVIEW
+================================================================================
+
+SkillRadar AI is a sophisticated workforce intelligence platform with:
+  - 13 specialized intelligence engines
+  - 6-factor automation risk model
+  - Real-time job market analysis
+  - Personalized course recommendations
+  - ML ensemble risk prediction
+  - Week-by-week learning timelines
+
+Location: /backend (FastAPI) + /skills_mirage (Engines)
+
+Files Analyzed:
+  - backend/api/profile.py, dashboard.py, intelligence.py, reskilling.py
+  - backend/models.py (database schema)
+  - skills_mirage/engines/*.py (13 engine implementations)
+  - backend/main.py (API setup)
+
+================================================================================
+SECTION 2: THE 13 INTELLIGENCE ENGINES
+================================================================================
+
+LAYER 1 - DATA ANALYSIS (4 engines):
+  1. Skill Demand Engine - Market trend detection for skills
+  2. Job Trend Engine - Hiring trend analysis by role
+  3. Salary Engine - Salary benchmarking by role
+  4. City Intelligence Engine - City-level job demand (CDI)
+
+LAYER 2 - WORKER INTELLIGENCE (4 engines):
+  5. Skill Extractor - NLP skill extraction from job descriptions
+  6. Skill Gap Engine - Detect missing skills between current/target role
+  7. Risk Engine - 6-factor automation risk prediction
+  8. Ensemble Risk Model - ML ensemble (XGBoost, RF, LR) risk prediction
+
+LAYER 2 - RECOMMENDATIONS (4 engines):
+  9. Skill Recommender - Rank skills to learn by priority
+  10. Course Recommender - Find best courses to close skill gap
+  11. Career Recommender - Suggest alternative career paths
+  12. Timeline Generator - Create week-by-week learning roadmap
+
+SPECIALTY ENGINES:
+  13. Additional engines for career/trend analysis
+
+================================================================================
+SECTION 3: KEY FORMULAS
+================================================================================
+
+SKILL GROWTH (Market Trend):
+  SkillGrowth = ((S_t - S_{t-1}) / S_{t-1}) * 100
+
+JOB GROWTH (Role Demand):
+  GrowthRate = ((J_t - J_{t-1}) / J_{t-1}) * 100
+
+TRANSFER SCORE (Transition Ease):
+  TransferScore = MatchingSkills / RequiredSkills
+  - 0.4+ = Easy transition (recommended)
+  - <0.4 = Significant upskilling needed
+
+COURSE SCORE (Best Course Ranking):
+  CourseScore = 0.50*SkillCoverage + 0.30*DurationFit + 0.20*CourseRating
+  Output: 0-100 score, higher is better
+
+SKILL SCORE (Best Skill to Learn):
+  SkillScore = 0.40*TrendScore + 0.35*SkillGap + 0.25*Transferability
+  Output: 0-100 score
+
+AUTOMATION RISK SCORE (6-Factor Model):
+  RiskScore = 0.25*H + 0.20*A + 0.20*SR + 0.15*I + 0.10*SL + 0.10*TA
+  
+  H = Hiring Decline (25%) - Are job postings decreasing?
+  A = AI Mentions (20%) - How often automation appears in postings
+  SR = Skill Redundancy (20%) - Automation potential of worker's skills
+  I = Industry Automation (15%) - Industry-level automation adoption
+  SL = Salary Decline (10%) - Is salary decreasing in this role?
+  TA = Task Automation (10%) - How automatable are the tasks?
+  
+  Output: 0-100 score
+  Low Risk: <30
+  Moderate Risk: 30-60
+  High Risk: >60
+
+CAREER SCORE (Best Alternative Role):
+  CareerScore = 0.35*SkillMatch + 0.25*DemandGrowth + 0.20*SalaryGrowth + 0.20*AutomationSafety
+  Output: 0-100 score
+
+================================================================================
+SECTION 4: WORKER PROFILE SYSTEM
+================================================================================
+
+PROFILE CREATION FLOW:
+  1. User submits: name, role, salary, city, experience, skills, job description
+  2. Backend processes:
+     - Extract skills from description (NLP)
+     - Calculate automation risk (6-factor model)
+     - Recommend skills to learn (ranking)
+     - Find safe alternative roles
+     - Generate learning timeline
+  3. Response includes: user_id, risk_score, recommendations, insights
+
+ENDPOINT: POST /api/profile/create
+REQUEST: { name, role, salary_lakhs, city, experience_years, current_skills, job_description, career_goal }
+RESPONSE: { user_id, profile, analysis (with risk_score, recommendations, insights) }
+
+PROFILE DATA STORED:
+  - User profile metadata (name, role, experience, etc.)
+  - Extracted skills (from NLP)
+  - Risk score and risk factors
+  - Recommended skills with priorities
+  - Key insights for user
+
+================================================================================
+SECTION 5: COURSE RECOMMENDATION SYSTEM
+================================================================================
+
+THE RESKILLING PATH PROCESS:
+  
+  Input: target_role, current_skills
+  
+  Step 1: SKILL GAP DETECTION
+    - Get required skills for target role
+    - Compare with current skills
+    - Output: list of missing skills
+  
+  Step 2: SKILL RECOMMENDATION
+    - Score each skill by: trend + gap relevance + transfer potential
+    - Combine gap skills + trending skills
+    - Output: ranked list of skills to learn
+  
+  Step 3: COURSE RECOMMENDATION
+    - Find courses covering gap skills
+    - Score by: coverage + duration fit + rating
+    - Output: top N courses ranked by score
+  
+  Step 4: TIMELINE GENERATION
+    - Map courses to available weeks
+    - Prioritize essential skills
+    - Create week-by-week schedule
+    - Output: learning roadmap
+  
+  Step 5: RETURN RESKILLING PATH
+    - Combine all above data
+    - Include course URLs (NPTEL/SWAYAM)
+    - Include alternative job options
+    - Return to dashboard
+
+ENDPOINT: POST /api/reskilling/path
+REQUEST: { target_role, current_skills }
+RESPONSE: {
+    target_role,
+    estimated_duration_weeks,
+    skill_gap,
+    skills_to_develop,
+    recommended_courses,
+    weekly_plan,
+    alternative_safe_jobs,
+    timeline_generator
+}
+
+WEEKLY PLAN FORMAT:
+  [
+    {
+      week: 1,
+      topic: "Python Fundamentals",
+      course: "Python for Data Analytics",
+      platform: "NPTEL",
+      hours: 6,
+      url: "https://nptel.ac.in/courses?q=..."
+    },
+    ...
+  ]
+
+================================================================================
+SECTION 6: DASHBOARD INTEGRATION
+================================================================================
+
+DASHBOARD DATA ENDPOINT: GET /api/dashboard/data?city=X&role=Y
+
+RETURNED DATA:
+  - trends: Top 5 job roles by demand
+  - top_vulnerable_cities: Cities with high automation risk
+  - top_safe_jobs: Low-risk job options
+  - top_growing_roles: Fastest growing roles
+  - top_trending_skills: Most demanded skills
+  - skills_demand: Skill popularity scores (0-100)
+  - hiring_chart_data: Data for charts by city or role
+  - recommended_courses: Top courses based on trends
+  - data_stats: Total jobs, courses, roles, cities
+  - available_cities: Filter options
+  - available_roles: Filter options
+
+SMART FILTERING:
+  - If city selected: Show top roles in that city
+  - If role selected: Show top cities for that role
+  - If neither: Show overall city distribution
+
+================================================================================
+SECTION 7: HOW TO USE - API ENDPOINTS
+================================================================================
+
+PROFILE ENDPOINTS:
+  POST /api/profile/create          Create profile + analysis
+  GET /api/profile/view/{user_id}   Retrieve saved profile
+
+INTELLIGENCE ENDPOINTS:
+  POST /api/intelligence/evaluate   Quick risk assessment
+  POST /api/reskilling/path         Get course recommendations
+
+DASHBOARD ENDPOINTS:
+  GET /api/dashboard/data           Market intelligence
+  POST /api/dashboard/scrape        Trigger live data refresh
+
+LABOUR MARKET ENDPOINTS:
+  GET /api/labour_market/*          Job market data
+
+CHATBOT E

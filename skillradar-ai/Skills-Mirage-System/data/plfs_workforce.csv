@@ -1,0 +1,7 @@
+sector,avg_wage_per_day,unemployment_rate,participation_rate
+Agriculture,450,4.2,55
+Manufacturing,650,5.8,48
+Services,950,6.5,52
+IT-BPM,1800,7.2,45
+Healthcare,1200,3.5,58
+Construction,550,8.0,42

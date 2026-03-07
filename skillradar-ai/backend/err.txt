@@ -1,0 +1,80 @@
+Traceback (most recent call last):
+  File "C:\Users\divye\OneDrive\Desktop\Practice\hackmiend\skillradar-ai\backend\test_import.py", line 4, in <module>
+    import main
+  File "C:\Users\divye\OneDrive\Desktop\Practice\hackmiend\skillradar-ai\backend\main.py", line 73, in <module>
+    from api import dashboard, intelligence, reskilling, chatbot_api, labour_market, profile
+  File "C:\Users\divye\OneDrive\Desktop\Practice\hackmiend\skillradar-ai\backend\api\chatbot_api.py", line 30, in <module>
+    from chatbot import create_chatbot_agent
+  File "C:\Users\divye\OneDrive\Desktop\Practice\hackmiend\skillradar-ai\Skills-Mirage-System\chatbot.py", line 10, in <module>
+    from langchain_classic.agents import AgentExecutor, create_react_agent
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_classic\agents\__init__.py", line 27, in <module>
+    from langchain_classic.agents.agent_toolkits.vectorstore.base import (
+    ...<2 lines>...
+    )
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_classic\agents\agent_toolkits\__init__.py", line 24, in <module>
+    from langchain_classic.agents.agent_toolkits.conversational_retrieval.openai_functions import (  # noqa: E501
+        create_conversational_retrieval_agent,
+    )
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_classic\agents\agent_toolkits\conversational_retrieval\openai_functions.py", line 9, in <module>
+    from langchain_classic.agents.openai_functions_agent.agent_token_buffer_memory import (
+        AgentTokenBufferMemory,
+    )
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_classic\agents\openai_functions_agent\agent_token_buffer_memory.py", line 13, in <module>
+    from langchain_classic.memory.chat_memory import BaseChatMemory
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_classic\memory\__init__.py", line 25, in <module>
+    from langchain_classic.memory.vectorstore_token_buffer_memory import (
+        ConversationVectorStoreTokenBufferMemory,  # avoid circular import
+    )
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_classic\memory\vectorstore_token_buffer_memory.py", line 23, in <module>
+    from langchain_classic.text_splitter import RecursiveCharacterTextSplitter
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_classic\text_splitter.py", line 3, in <module>
+    from langchain_text_splitters import (
+    ...<5 lines>...
+    )
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_text_splitters\__init__.py", line 42, in <module>
+    from langchain_text_splitters.spacy import SpacyTextSplitter
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\langchain_text_splitters\spacy.py", line 13, in <module>
+    import spacy  # type: ignore[import-not-found, unused-ignore]
+    ^^^^^^^^^^^^
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\__init__.py", line 13, in <module>
+    from . import pipeline  # noqa: F401
+    ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\pipeline\__init__.py", line 1, in <module>
+    from .attributeruler import AttributeRuler
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\pipeline\attributeruler.py", line 10, in <module>
+    from ..language import Language
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\language.py", line 46, in <module>
+    from .pipe_analysis import analyze_pipes, print_pipe_analysis, validate_attrs
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\pipe_analysis.py", line 6, in <module>
+    from .tokens import Doc, Span, Token
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\tokens\__init__.py", line 1, in <module>
+    from ._serialize import DocBin
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\tokens\_serialize.py", line 14, in <module>
+    from ..vocab import Vocab
+  File "spacy/vocab.pyx", line 1, in init spacy.vocab
+  File "spacy/tokens/doc.pyx", line 49, in init spacy.tokens.doc
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\spacy\schemas.py", line 195, in <module>
+    class TokenPatternString(BaseModel):
+    ...<43 lines>...
+            return v
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\pydantic\v1\main.py", line 221, in __new__
+    inferred = ModelField.infer(
+        name=var_name,
+    ...<3 lines>...
+        config=config,
+    )
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\pydantic\v1\fields.py", line 504, in infer
+    return cls(
+        name=name,
+    ...<7 lines>...
+        field_info=field_info,
+    )
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\pydantic\v1\fields.py", line 434, in __init__
+    self.prepare()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\pydantic\v1\fields.py", line 544, in prepare
+    self._set_default_and_type()
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\divye\AppData\Local\Programs\Python\Python314\Lib\site-packages\pydantic\v1\fields.py", line 576, in _set_default_and_type
+    raise errors_.ConfigError(f'unable to infer type for attribute "{self.name}"')
+pydantic.v1.errors.ConfigError: unable to infer type for attribute "REGEX"

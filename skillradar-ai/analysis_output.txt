@@ -1,0 +1,258 @@
+# SkillRadar AI - Backend Reskilling & Worker Intelligence System Analysis
+
+## 1. SYSTEM ARCHITECTURE OVERVIEW
+
+The SkillRadar AI system is a sophisticated multi-layer worker intelligence and reskilling platform consisting of:
+
+### Layer Structure:
+- API Layer: FastAPI routers for 6 main services
+- Skills Mirage Engine Layer: 13 specialized intelligence engines  
+- Data Pipeline Layer: Real Naukri job data + NPTEL/SWAYAM course data
+- Storage Layer: SQLite user profiles + file-based caching
+
+---
+
+## 2. THE 13 INTELLIGENCE ENGINES
+
+### LAYER 1: Data Analysis Engines
+
+A. Skill Demand Engine (skill_demand.py)
+   Input: Job listings with month and skills columns
+   Output: Trending skills with growth rates (0-100%)
+   Formula: SkillGrowth = ((S_t - S_{t-1}) / S_{t-1}) * 100
+   Key Function: get_skill_trend_score(skill, df) → 0-1 normalized score
+
+B. Job Trend Engine (trend_engine.py)
+   Input: Jobs grouped by role and month
+   Output: Role growth rates and trends
+   Formula: GrowthRate = ((J_t - J_{t-1}) / J_{t-1}) * 100
+   Key Function: get_top_growing_roles(df, top_n=5)
+
+C. Salary Engine (salary_engine.py)
+   Input: Jobs with salary_min and salary_max
+   Output: Salary benchmarks by role
+   Formula: SalaryGrowth = (TargetSalary - CurrentSalary) / CurrentSalary
+   Key Function: get_average_salary(df, role) → {avg_min, avg_max, avg_mid}
+
+D. City Intelligence Engine (city_engine.py)
+   Input: Jobs with city column
+   Output: City demand index (CDI) for roles
+   Formula: CDI = Jobs(city, role) / TotalJobs(role)
+   Key Function: get_top_cities_for_role(df, role, top_n=3)
+
+### LAYER 2: Worker Intelligence Engines
+
+A. Skill Extractor (skill_extractor.py)
+   INPUT: Worker job description (text)
+   METHOD: Keyword matching + Semantic similarity (Sentence Transformers)
+   OUTPUT: Extracted skills list
+   EXAMPLE:
+   Input: "I handle customer support calls, manage CRM, analyze with Excel"
+   Output: ["Communication", "CRM", "Excel", "Data Analytics"]
+
+B. Skill Gap Engine (skill_gap.py)
+   INPUT: Worker current_skills, target_role, jobs_df
+   FORMULA: SkillGap = TargetSkills - WorkerSkills
+            TransferScore = SharedSkills / TotalTargetSkills
+   OUTPUT:
+   {
+     "skill_gap": ["Python", "SQL", "PowerBI"],
+     "transfer_score": 0.20,
+     "matched_skills": ["Excel"],
+     "recommendation": "Significant Upskilling Needed"
+   }
+   
+   Transfer Score Interpretation:
+   - 0.4+ = Recommended transition (easier)
+   - <0.4 = Significant upskilling needed (harder)
+
+C. Risk Engine (risk_engine.py)
+   INPUT: jobs_df, role, worker_skills
+   6-FACTOR FORMULA:
+   RiskScore = 0.25*H + 0.20*A + 0.20*SR + 0.15*I + 0.10*SL + 0.10*TA
+   
+   Where:
+   - H (25%): Hiring Decline Score (job postings decreasing?)
+   - A (20%): AI Mention Score (automation keywords in postings)
+   - SR (20%): Skill Redundancy (automation potential of skills)
+   - I (15%): Industry Automation Index
+   - SL (10%): Salary Decline Score
+   - TA (10%): Task Automation Score
+   
+   OUTPUT:
+   {
+     "risk_score": 72.5,
+     "risk_level": "High",
+     "factors": {detailed breakdown of each factor}
+   }
+
+D. Ensemble Risk Model (ensemble_risk_model.py)
+   Advanced ML ensemble combining:
+   - XGBoost (35% weight)
+   - Random Forest (35% weight)
+   - Logistic Regression (30% weight)
+   
+   OUTPUT:
+   {
+     "risk_score": 68.3,
+     "confidence": 0.85,
+     "model_predictions": {xgboost, random_forest, logistic_regression}
+   }
+
+### LAYER 2: Recommendation Engines
+
+A. Skill Recommender (skill_recommender.py)
+   INPUT: jobs_df, worker_skills, career_goal, city, top_n
+   FORMULA:
+   SkillScore = 0.40*TrendScore + 0.35*SkillGap + 0.25*Transferability
+   
+   OUTPUT:
+   [
+     {
+       "skill": "Python",
+       "skill_score": 85.2,
+       "trend_growth_pct": 45.0,
+       "in_skill_gap": True,
+       "priority": "High"
+     }
+   ]
+
+B. Course Recommender (course_recommender.py)
+   INPUT: courses_df, skill_gap, available_weeks, top_n
+   FORMULA:
+   CourseScore = 0.50*SkillCoverage + 0.30*DurationFit + 0.20*CourseRating
+   
+   Where:
+   - SkillCoverage (50%): How many gap skills does it cover?
+   - DurationFit (30%): Does duration match available weeks?
+   - CourseRating (20%): Course rating 0-5 normalized to 0-1
+   
+   OUTPUT:
+   [
+     {
+       "course_name": "Python for Data Analytics",
+       "provider": "NPTEL",
+       "skills_covered": ["Python", "Data Analytics"],
+       "duration_weeks": 8,
+       "rating": 4.5,
+       "course_score": 82.3,
+       "gap_skills_covered": ["Python"],
+       "url": "https://nptel.ac.in/courses?q=..."
+     }
+   ]
+
+C. Career Recommender (career_recommender.py)
+   INPUT: jobs_df, worker_skills, current_role, salary_data
+   FORMULA:
+   CareerScore = 0.35*SkillMatch + 0.25*DemandGrowth + 0.20*SalaryGrowth + 0.20*AutomationSafety
+   
+   OUTPUT: Ranked list of alternative career paths
+
+### LAYER 2: Timeline & Planning Engines
+
+A. Timeline Generator (timeline_generator.py)
+   INPUT: skills to learn, courses_df, max_weeks
+   OUTPUT: Week-by-week learning roadmap with course mapping
+   
+   Contains:
+   - CourseTimelineGenerator class
+   - Methods: generate_timeline(), generate_timeline_with_gap(), get_accelerated_timeline()
+   - Output: LearningTimeline object with:
+     * total_weeks: estimated duration
+     * timeline: list of TimelineItem objects (week_start, week_end, course_name, skill, etc.)
+     * skills_covered: list of skills covered
+     * courses_count: number of courses
+
+---
+
+## 3. WORKER PROFILE SYSTEM
+
+### Profile Data Model (backend/models.py):
+
+Database Tables:
+1. user_profiles: id, job_title, city, experience_years, write_up, ai_risk_score
+2. user_skills: id, user_id, skill_name, vulnerability_index
+3. chat_history: id, user_id, message_type, content, language, timestamp
+4. job_market_trends: id, city, job_title, demand_score, ai_automation_signal
+5. courses: id, platform, title, target_skill, duration_weeks, url
+
+### Profile Creation API (backend/api/profile.py):
+
+Endpoint: POST /api/profile/create
+
+REQUEST:
+{
+    "name": "John Doe",
+    "role": "BPO Executive",
+    "salary_lakhs": 3.5,
+    "city": "Bangalore",
+    "experience_years": 3,
+    "current_skills": ["Communication", "CRM"],
+    "job_description": "Handle customer calls, manage CRM...",
+    "career_goal": "Data Analyst"
+}
+
+PROCESSING STEPS:
+1. Extract skills from job_description (skill_extractor.py)
+2. Calculate automation risk score (risk_engine.py 6-factor model)
+3. Get recommended skills to learn (skill_recommender.py)
+4. Find safe alternative roles (trend_engine.py)
+5. Calculate learning timeline (skill_gap.py + courses)
+6. Generate key insights
+7. Save to file/database
+
+RESPONSE:
+{
+    "success": True,
+    "user_id": "john_doe_1709763300",
+    "profile": { name, role, skills, ...},
+    "analysis": {
+        "extracted_skills": ["Communication", "CRM", "Excel"],
+        "risk_score": 72.5,
+        "risk_level": "High",
+        "recommended_skills": [
+            {"skill": "Python", "score": 85.2, "priority": "High"}
+        ],
+        "safe_alternative_roles": ["Data Analyst", "Digital Marketing"],
+        "learning_timeline_weeks": 12,
+        "key_insights": ["Your role has HIGH automation risk..."]
+    }
+}
+
+---
+
+## 4. COURSE RECOMMENDATION FLOW
+
+### End-to-End Process:
+
+Step 1: Get Skill Gap
+├─ Input: current_skills, target_role, jobs_df
+├─ Function: detect_skill_gap()
+└─ Output: ["Python", "SQL", "PowerBI", "Data Analytics"]
+
+Step 2: Recommend Skills
+├─ Input: jobs_df, skills, career_goal, city, top_n
+├─ Function: recommend_skills()
+└─ Output: Ranked list of skills by priority
+
+Step 3: Find Best Courses
+├─ Input: courses_df, skill_gap, available_weeks, top_n
+├─ Function: recommend_courses()
+└─ Output: Ranked courses by CourseScore
+
+Step 4: Generate Timeline
+├─ Input: skills, courses_df, max_weeks
+├─ Function: CourseTimelineGenerator.generate_timeline()
+└─ Output: LearningTimeline with week-by-week schedule
+
+Step 5: Return Reskilling Path
+└─ Endpoint: POST /api/reskilling/path
+
+### Reskilling API (backend/api/reskilling.py):
+
+Endpoint: POST /api/reskilling/path
+
+REQUEST:
+{
+    "target_role": "Data Analyst",
+    "current_skills": ["Excel", "Commun

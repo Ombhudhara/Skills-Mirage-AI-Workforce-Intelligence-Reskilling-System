@@ -1,0 +1,6 @@
+pandas
+requests
+beautifulsoup4
+apify-client
+streamlit
+scikit-learn

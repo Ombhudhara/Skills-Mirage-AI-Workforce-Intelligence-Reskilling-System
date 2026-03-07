@@ -1,0 +1,221 @@
+CODEBASE ANALYSIS SUMMARY - SkillRadar AI / Skills Mirage
+===========================================================
+
+PROJECT STRUCTURE:
+Frontend:           ./frontend/src/
+Backend:            ./backend/
+Skills Mirage Core: ./skills_mirage/
+Data:               ./data/, ./skills_mirage/data/
+
+=========================================================
+1. FRONTEND DIRECTORY STRUCTURE (./frontend/src/)
+=========================================================
+
+app/
+  - App.jsx (Main router & layout)
+  - App.css (Global styles)
+  - main.jsx (React entry)
+  - index.css (Global CSS)
+
+api/
+  - client.js (Axios API client)
+
+pages/
+  - Dashboard.jsx (759+ lines, main dashboard)
+  - UserProfile.jsx (580+ lines, profile creation)
+  - WorkerIntelligence.jsx (Risk analysis)
+  - ReskillingPaths.jsx (Reskilling recommendations)
+  - SalaryExplorer.jsx (Salary analysis)
+  - CityDetail.jsx (City details)
+  - Welcome.jsx (Landing page)
+  - Login.jsx (Authentication)
+
+components/
+  - ChatbotWidget.jsx (AI chatbot)
+  - DrillDownPanel.jsx (Drill-down details)
+  - IndiaMap.jsx (Interactive India map)
+  - BackgroundEffect.jsx (Visual effects)
+  - ThemeToggle.jsx (Theme switcher)
+
+=========================================================
+2. CITIES DEFINITION LOCATIONS
+=========================================================
+
+A. HARDCODED IN FRONTEND:
+   File: ./frontend/src/pages/Dashboard.jsx
+   - Line 162-170: cityMetrics (7 cities: Bangalore, Mumbai, Delhi, Hyderabad, Pune, Chennai, Gurgaon)
+   - Line 173-230: cityHiringCompanies (Same 7 cities with company data)
+   - Line 244-252: cityRoleDemandMultiplier (City-based role demand)
+
+   File: ./frontend/src/pages/UserProfile.jsx
+   - Line 24: ['Bangalore', 'Mumbai', 'Delhi', 'Pune', 'Hyderabad', 'Kolkata', 'Chennai', 'Noida']
+
+B. DYNAMICALLY FROM BACKEND:
+   File: ./backend/api/dashboard.py
+   - Line 49: available_cities extracted from jobs_df["city"].unique()
+
+C. EXTRACTED DURING DATA PREPROCESSING:
+   File: ./skills_mirage/pipeline/preprocessor.py
+   - Line 47-52: MAJOR_CITIES list (15 cities):
+     Bangalore, Bengaluru, Mumbai, Delhi, Hyderabad, Pune, Chennai, Kolkata,
+     Ahmedabad, Noida, Gurgaon, Gurugram, Indore, Jaipur, Chandigarh
+   - Line 68-76: _extract_city() function extracts from URLs/text
+
+D. RAW DATA SOURCES:
+   File: ./skills_mirage/data/ (Naukri CSVs contain actual city data)
+   - NaukriData_Data Science.csv
+   - NaukriData_data analytics.csv
+   - Naukri_Data_Scientist_and_Data_Analytics_Jobs_Data.csv
+
+=========================================================
+3. ROLES DEFINITION LOCATIONS
+=========================================================
+
+A. HARDCODED IN FRONTEND:
+   File: ./frontend/src/pages/UserProfile.jsx
+   - Line 25-29: ['Data Analyst', 'Data Scientist', 'Software Engineer', 'ML Engineer',
+                   'DevOps Engineer', 'Product Manager', 'Business Analyst', 'Data Entry Operator',
+                   'Full Stack Developer', 'Cloud Architect']
+
+   File: ./frontend/src/pages/Dashboard.jsx
+   - Line 96-125: roleDemandByPeriod (Mock role data with demand scores)
+
+B. DYNAMICALLY FROM BACKEND:
+   File: ./backend/api/dashboard.py
+   - Line 50: available_roles extracted from jobs_df["role"].unique()
+
+C. ROLE-TO-INDUSTRY MAPPING:
+   File: ./skills_mirage/pipeline/preprocessor.py
+   - Line 28-45: ROLE_INDUSTRY_MAP:
+     "data scientist" → IT
+     "data analyst" → IT
+     "business analyst" → IT
+     "digital marketing" → Marketing
+     "customer support" → BPO
+     "sales" → Sales
+     "hr" → HR
+     "finance" → Finance
+
+D. AUTOMATION RISK ESTIMATES:
+   File: ./backend/api/dashboard.py
+   - Line 171-187: _estimate_automation(role):
+     HIGH RISK (85%): data entry, clerk, tele, cashier, accountant, receptionist, typist
+     MEDIUM RISK (55%): analyst, support, executive, admin, assistant
+     LOW RISK (25%): engineer, developer, manager, architect, scientist, doctor, nurse
+     DEFAULT: 50%
+
+D. RAW DATA SOURCES:
+   Cities extracted from Naukri CSV "Job_Titles" column (normalized to "role")
+
+=========================================================
+4. DASHBOARD STRUCTURE & DATA FLOW
+=========================================================
+
+BACKEND API ENDPOINT:
+File: ./backend/api/dashboard.py
+- Endpoint: GET /api/dashboard/data
+- Parameters: city (optional), role (optional)
+- Response: (See detailed response structure below)
+
+KEY FUNCTIONS:
+Line 49: Extract available cities
+Line 50: Extract available roles
+Line 53-57: Apply filters based on city/role
+Line 59: Get role counts and trends
+Line 86-108: Smart hiring chart logic (context-aware)
+Line 125-126: Call engine functions:
+  - get_top_growing_roles(df_filtered, top_n=5)
+  - get_top_trending_skills(df_filtered, top_n=10)
+Line 129-135: Extract and count skills
+Line 138-142: Get company data
+
+RESPONSE STRUCTURE:
+{
+  "trends": [Array of top 5 job roles with demand_score and ai_automation_signal],
+  "top_vulnerable_cities": [Array of 3 highest-risk cities],
+  "top_safe_jobs": [Array of lowest-risk job titles],
+  "top_growing_roles": [From trend_engine.get_top_growing_roles()],
+  "top_trending_skills": [From skill_demand.get_top_trending_skills()],
+  "skills_demand": [Top 10 skills with demand scores],
+  "company_data": [Top 10 hiring companies with posting counts],
+  "hiring_chart_data": [Dynamically cities or roles based on filter],
+  "hiring_chart_label": ["Hiring by City" or "Top Roles in {City}" etc],
+  "hiring_chart_key": ["city" or "role"],
+  "data_stats": {total_jobs, total_courses, unique_roles, unique_cities},
+  "available_cities": [Sorted list of all cities],
+  "available_roles": [Sorted list of all roles],
+  "filtered_city": [Current city filter],
+  "filtered_role": [Current role filter]
+}
+
+FRONTEND INTEGRATION:
+File: ./frontend/src/pages/Dashboard.jsx
+- Line 287-291: Component state (selectedCity, selectedRole, selectedPeriod)
+- Line 336-386: useEffect loads data via getDashboardData()
+- Line 449-462: City and Role selector dropdowns
+- Line 500-523: Stats overview cards
+- Line 585-630: Company hiring and role demand charts
+- Line 703-744: Skills and role leaderboard
+- Line 746-758: Displacement warning signals
+
+API CLIENT:
+File: ./frontend/src/api/client.js
+- Line 12-22: getDashboardData(city, role) function
+- baseURL: 'http://localhost:8000/api'
+
+ENGINE FUNCTIONS CALLED:
+File: ./skills_mirage/engines/
+
+1. trend_engine.py (Line 46-52):
+   get_top_growing_roles(df, top_n=5)
+   Returns: [{role, growth_rate, trend}, ...]
+
+2. skill_demand.py (Lines 56-67):
+   get_top_trending_skills(df, top_n=10)
+   Returns: [{skill, growth_rate, this_month}, ...]
+
+3. city_engine.py (Lines 69-76):
+   get_top_skills_for_city(df, city, top_n=5)
+   Returns: [{skill, count}, ...]
+
+4. city_engine.py (Lines 59-66):
+   get_top_cities_for_role(df, role, top_n=3)
+   Returns: [{city, cdi, total_jobs, demand}, ...]
+
+=========================================================
+5. DATA PIPELINE & PREPROCESSING
+=========================================================
+
+FILE: ./skills_mirage/pipeline/data_pipeline.py
+
+Cache Configuration (Line 43):
+- CACHE_TTL_HOURS = 24
+
+Input Files:
+- NAUKRI_DS1: NaukriData_Data Science.csv (Line 28)
+- NAUKRI_DS2: NaukriData_data analytics.csv (Line 29)
+- NAUKRI_DS3: Naukri_Data_Scientist_and_Data_Analytics_Jobs_Data.csv (Line 30)
+- NPTEL_CSV: nptel_courses.csv (Line 31)
+- SWAYAM_CSV: swayam_courses.csv (Line 32)
+- LOCAL_JOBS_CSV: jobs.csv (Line 35)
+- LOCAL_COURSES_CSV: courses.csv (Line 36)
+
+Output Files:
+- PROCESSED_JOBS_CSV: jobs_processed.csv (Line 39)
+- PROCESSED_COURSES_CSV: courses_processed.csv (Line 40)
+
+Processing Pipeline:
+1. _load_naukri_csv() (Line 55-65): Loads CSVs with encoding fallback
+2. _build_jobs_df() (Line 112-178): Merge all job sources
+3. _build_courses_df() (Line 69-108): Merge all course sources
+4. build_pipeline() (Line 182-215): Main public API
+
+Standardized Schema (from preprocessor.py):
+- role (Job_Titles)
+- city (extracted from URL/text)
+- salary_min, salary_max (estimated from experience)
+- skills (Key Skills)
+- experience (parsed from Experience_Required)
+- description (from skills text)
+- industry (mapped from role)
+- posting_date (parsed from 

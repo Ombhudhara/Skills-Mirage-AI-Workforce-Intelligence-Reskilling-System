@@ -1,0 +1,247 @@
+================================================================================
+                    SKILLRADAR AI - ENGINE REFERENCE GUIDE
+                    Quick lookup for all 13 intelligence engines
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAYER 1: DATA ANALYSIS ENGINES (4 engines)                                 │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+1. SKILL DEMAND ENGINE
+   File: skills_mirage/engines/skill_demand.py
+   Purpose: Detect trending skills in job market
+   
+   Key Functions:
+   • get_skill_trend_score(skill: str, df: DataFrame) → float (0-1)
+   • get_top_trending_skills(df: DataFrame, top_n: int) → List[Dict]
+   • analyze_skill_demand(df: DataFrame) → Dict
+   
+   Input: Jobs DataFrame with 'month' and 'skills' columns
+   Output: Skill growth rates, trend scores
+   Formula: SkillGrowth = ((S_t - S_{t-1}) / S_{t-1}) * 100
+   
+   Example Output:
+   {
+     "skill": "Python",
+     "growth_rate": 45.2,
+     "this_month": 1250,
+     "last_month": 861
+   }
+
+─────────────────────────────────────────────────────────────────────────────
+
+2. JOB TREND ENGINE
+   File: skills_mirage/engines/trend_engine.py
+   Purpose: Analyze hiring trends by role over time
+   
+   Key Functions:
+   • get_top_growing_roles(df: DataFrame, top_n: int) → List[Dict]
+   • analyze_job_trends(df: DataFrame) → Dict
+   
+   Input: Jobs DataFrame with 'role' and 'month' columns
+   Output: Role growth rates, trend direction
+   Formula: GrowthRate = ((J_t - J_{t-1}) / J_{t-1}) * 100
+   
+   Example Output:
+   {
+     "role": "Data Analyst",
+     "growth_rate": 32.5,
+     "trend": "Growing",
+     "monthly_counts": {"Jan": 450, "Feb": 595}
+   }
+
+─────────────────────────────────────────────────────────────────────────────
+
+3. SALARY ENGINE
+   File: skills_mirage/engines/salary_engine.py
+   Purpose: Provide salary benchmarks and growth analysis
+   
+   Key Functions:
+   • get_average_salary(df: DataFrame, role: str) → Dict
+   • get_salary_benchmarks(df: DataFrame) → List[Dict]
+   • analyze_salary_feasibility(df, current_role, target_salary) → Dict
+   
+   Input: Jobs DataFrame with 'salary_min' and 'salary_max'
+   Output: Salary ranges, growth potential
+   Formula: SalaryGrowth = (TargetSalary - CurrentSalary) / CurrentSalary
+   
+   Example Output:
+   {
+     "role": "Data Scientist",
+     "avg_min": 8.5,
+     "avg_max": 20.0,
+     "avg_mid": 14.25,
+     "salary_range": "₹8.5–20 LPA"
+   }
+
+─────────────────────────────────────────────────────────────────────────────
+
+4. CITY INTELLIGENCE ENGINE
+   File: skills_mirage/engines/city_engine.py
+   Purpose: Analyze city-level job demand (CDI)
+   
+   Key Functions:
+   • get_top_cities_for_role(df, role, top_n=3) → List[Dict]
+   • get_top_skills_for_city(df, city, top_n=5) → List[Dict]
+   • analyze_city_demand(df, role) → Dict
+   
+   Input: Jobs DataFrame with 'city' column
+   Output: City demand index, city growth rates
+   Formula: CDI = Jobs(city, role) / TotalJobs(role)
+   
+   Example Output:
+   {
+     "city": "Bangalore",
+     "cdi": 0.45,
+     "total_jobs": 1200,
+     "demand_level": "High"
+   }
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAYER 2: WORKER INTELLIGENCE ENGINES (4 engines)                           │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+5. SKILL EXTRACTOR ENGINE
+   File: skills_mirage/engines/skill_extractor.py
+   Purpose: Extract skills from worker's job description using NLP
+   
+   Key Functions:
+   • extract_skills_from_text(description: str) → List[str]
+   • get_worker_skill_profile(description: str) → Dict
+   
+   Method: Hybrid (Keyword matching + Semantic similarity)
+   
+   Input: Worker job description (text)
+   Output: List of extracted skills
+   
+   Example:
+   Input: "I handle customer support calls, manage CRM, analyze with Excel"
+   Output: ["Communication", "CRM", "Excel", "Data Analytics"]
+   
+   Skill Library: 30+ known skills with aliases
+   Example Aliases:
+   • "CRM" ← "customer relationship management", "crm automation"
+   • "Communication" ← "calls", "call handling"
+   • "Data Entry" ← "data entry"
+   • "Email Support" ← "email"
+
+─────────────────────────────────────────────────────────────────────────────
+
+6. SKILL GAP ENGINE
+   File: skills_mirage/engines/skill_gap.py
+   Purpose: Identify missing skills for target role
+   
+   Key Functions:
+   • detect_skill_gap(worker_skills, target_role, df) → Dict
+   • get_required_skills(role, df) → List[str]
+   
+   Input: Worker skills, target role, jobs DataFrame
+   Output: Skill gap list, transfer score
+   Formula: SkillGap = TargetSkills - WorkerSkills
+            TransferScore = SharedSkills / TotalTargetSkills
+   
+   Example Output:
+   {
+     "target_role": "Data Analyst",
+     "required_skills": ["Python", "SQL", "Excel", "PowerBI"],
+     "matched_skills": ["Excel"],
+     "skill_gap": ["Python", "SQL", "PowerBI"],
+     "transfer_score": 0.25,
+     "recommendation": "Significant Upskilling Needed"
+   }
+   
+   Transfer Score Interpretation:
+   • 0.4+ = Recommended Transition (easier path)
+   • <0.4 = Significant Upskilling Needed (harder path)
+
+─────────────────────────────────────────────────────────────────────────────
+
+7. RISK ENGINE (Basic)
+   File: skills_mirage/engines/risk_engine.py
+   Purpose: Calculate automation risk score (6-factor model)
+   
+   Key Functions:
+   • predict_risk_score(df, role, worker_skills) → Dict
+   
+   Input: Jobs DataFrame, role, worker skills
+   Output: Risk score 0-100, risk level, factor breakdown
+   
+   Formula (6-Factor Weighted Model):
+   RiskScore = 0.25*H + 0.20*A + 0.20*SR + 0.15*I + 0.10*SL + 0.10*TA
+   
+   Where:
+   • H (25%): Hiring Decline - Are job postings decreasing?
+             calculate_hiring_decline_score(df, role)
+   • A (20%): AI Mentions - How often automation appears in postings
+             calculate_ai_mention_score(df, role)
+   • SR (20%): Skill Redundancy - Automation potential of skills
+              calculate_skill_redundancy_score(worker_skills)
+   • I (15%): Industry Automation - Pre-defined by industry
+             calculate_industry_automation_score(industry)
+   • SL (10%): Salary Decline - Historical salary trends
+              calculate_salary_decline_score(role)
+   • TA (10%): Task Automation - Automation potential by role
+              calculate_task_automation_score(role)
+   
+   Example Output:
+   {
+     "risk_score": 72.5,
+     "risk_level": "High",
+     "factors": {
+       "hiring_decline": 0.45,
+       "ai_mentions": 0.35,
+       "skill_redundancy": 0.65,
+       "industry_automation": 0.75,
+       "salary_decline": 0.60,
+       "task_automation": 0.80
+     }
+   }
+   
+   Risk Levels:
+   • Low: <30
+   • Moderate: 30-60
+   • High: >60
+
+─────────────────────────────────────────────────────────────────────────────
+
+8. ENSEMBLE RISK MODEL
+   File: skills_mirage/engines/ensemble_risk_model.py
+   Purpose: Advanced ML ensemble for accurate risk prediction
+   
+   Key Classes:
+   • EnsembleRiskModel - Main ensemble class
+   • RiskPrediction (dataclass) - Prediction result
+   
+   Key Methods:
+   • predict(...) → RiskPrediction
+   • train(X, y) → Dict (with model accuracies)
+   
+   ML Components:
+   • XGBoost (35% weight)
+   • Random Forest (35% weight)
+   • Logistic Regression (30% weight)
+   
+   Training: Synthetic data (1000 samples)
+   Fallback: Rule-based if models not trained
+   
+   Example Output:
+   RiskPrediction(
+     risk_score=68.3,
+     risk_level="Moderate Risk",
+     confidence=0.85,
+     model_predictions={
+       "xgboost": 72.1,
+       "random_forest": 68.5,
+       "logistic_regression": 64.2
+     }
+   )
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ LAYER 2: RECOMMENDATION ENGINES (4 engines)                                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+9. SKILL RECOMMENDER ENGINE
+   File: skills_mirage/engines/skill_recommender.py
+   Purpose: Rank skills to learn for career growth
+   
+   Ke

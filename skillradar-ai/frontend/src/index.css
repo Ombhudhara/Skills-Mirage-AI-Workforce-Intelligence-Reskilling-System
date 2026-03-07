@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;600;800;900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary-500: #7c3aed;
+  --color-primary-600: #6d28d9;
+  --color-primary-700: #5b21b6;
+
+  --color-secondary-500: #06b6d4;
+  --color-secondary-600: #0891b2;
+
+  --color-dark-bg: #020617;
+  --color-light-bg: #f8fafc;
+}
+
+@layer base {
+  :root {
+    --bg-color: #020617;
+    /* bg-slate-950 */
+    --text-color: #ffffff;
+    /* text-white */
+    --card-bg: #0f172a;
+    /* bg-slate-900 */
+    --card-border: #1e293b;
+    /* border-slate-800 or 700 */
+    --muted-text: #94a3b8;
+    /* text-slate-400 */
+    --accent-glow: rgba(124, 58, 237, 0.3);
+
+    /* Chart Tokens */
+    --chart-text: #94a3b8;
+    --chart-grid: #1e293b;
+    --chart-label: #e2e8f0;
+    --chart-tooltip-bg: #0f172a;
+  }
+
+  body {
+    background-color: #020617;
+    color: #e2e8f0;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer components {
+  .neural-glow {
+    text-shadow: 0 0 20px var(--accent-glow);
+  }
+
+  .glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    @apply rounded-[2.5rem] shadow-xl;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .glass-card:hover {
+    @apply -translate-y-2;
+    border-color: var(--color-primary-500);
+    box-shadow: 0 20px 40px -20px var(--accent-glow);
+  }
+}
+
+@layer components {
+  .glass-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    @apply rounded-2xl shadow-sm;
+  }
+
+  .glass-card:hover {
+    @apply -translate-y-1 shadow-md;
+    border-color: var(--color-primary-500);
+  }
+
+  .neon-border {
+    border: 1px solid rgba(124, 58, 237, 0.5);
+    box-shadow: 0 0 15px rgba(124, 58, 237, 0.2), inset 0 0 5px rgba(124, 58, 237, 0.1);
+  }
+
+  .premium-btn {
+    @apply relative overflow-hidden px-6 py-3 rounded-lg font-semibold text-sm transition-all active:scale-95;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Recharts Custom Tooltip Styling */
+.recharts-tooltip-wrapper {
+  outline: none !important;
+}
+
+.custom-tooltip {
+  background: var(--bg-color);
+  border: 1px solid var(--card-border);
+  @apply p-4 rounded-lg shadow-lg;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--card-border);
+  @apply rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-primary-500/50;
+}
